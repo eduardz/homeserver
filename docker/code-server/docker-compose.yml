@@ -1,0 +1,19 @@
+version: "3"
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Bucharest
+      - PASSWORD=MyPassword
+      - SUDO_PASSWORD=MyOptionalStrongSudoPassword #optional
+      - PROXY_DOMAIN=vscode.example.com #optional
+      - DEFAULT_WORKSPACE=/home/workspace #optional
+    volumes:
+      - ~/workspace:/workspace
+      - ./config:/config # configuration folder 
+    ports:
+      - 8443:8443
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+version: "3"
+services:
+  wyl:
+    image: aceberg/watchyourlan
+    container_name: watchyourlan
+    network_mode: "host"
+    restart: unless-stopped
+    volumes:
+    - ./data:/watchyourlan:/data
+    environment:
+      TZ: Europe/Bucharest
+      IFACE: "ens18"   # 1 or more interfaces
+      DBPATH: "/data/db.sqlite" 
+      GUIIP: "0.0.0.0" 
+      GUIPORT: "8840"  # default: 8840
+      TIMEOUT: "120"   # time in seconds 
+      THEME: "slate" 

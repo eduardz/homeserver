@@ -1,0 +1,22 @@
+version: '3'
+services:
+  unbound:
+    container_name: unbound
+    privileged: true
+    image: "mvance/unbound:latest"
+    expose:
+      - "53"
+    network_mode: "host"
+    ports:
+      - target: 53
+        published: 53
+        protocol: tcp
+        mode: host
+      - target: 53
+        published: 53
+        protocol: udp
+        mode: host
+    volumes:
+      - ./forward-records.conf:/opt/unbound/etc/unbound/forward-records.conf:ro
+      - ./a-records.conf:/opt/unbound/etc/unbound/a-records.conf:ro
+    restart: unless-stopped
