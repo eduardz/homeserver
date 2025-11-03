@@ -1,28 +1,26 @@
-version: "3.8"
 services:
   db:
-    image: linuxserver/mariadb:latest
+    image: mariadb:lts
     container_name: nextcloud_db
     network_mode: bridge
     deploy:
       resources:
         limits:
           memory: 512M
+    env_file:
+      - .env
     environment:
-      - PUID=1002
-      - NEXTCLOUD_TRUSTED_DOMAINS=localhost, 192.168.0.0/16, 10.7.0.0/24, 10.6.0.10/24, nextcloud.duckdns.org
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - TZ=Europe/Bucharest
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
-    env_file:
-      - nextcloud.env
     restart: unless-stopped
     volumes:
-     - ${DOCKER_FOLDER}/mariadb:/var/lib/mysql
+      - ./mariadb:/var/lib/mysql
   nextcloud:
-    image: linuxserver/nextcloud:latest
+    #image: linuxserver/nextcloud:latest
+    image: linuxserver/nextcloud:30.0.0-ls345
     container_name: nextcloud
     network_mode: bridge
     deploy:
@@ -30,16 +28,20 @@ services:
         limits:
           memory: 2048M
     environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_HOST=172.17.0.2 # MYSQL_HOST=db
       - TZ=Europe/Bucharest
-      - NEXTCLOUD_TRUSTED_DOMAINS=localhost, 192.168.0.0/16, 10.7.0.0/24, 10.6.0.10/24, nextcloud.duckdns.org
-      - PHP_UPLOAD_LIMIT=10G
-      - PHP_MEMORY_LIMIT=2G
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost, 192.168.0.0/16, 10.7.0.0/24, 10.6.0.10/24, ${DOMAIN}
+      - PHP_UPLOAD_LIMIT=1G
+      - PHP_MEMORY_LIMIT=1G
+#- NEXTCLOUD_DATADIR=/media/nexcloud_data
     volumes:
-      - ${DOCKER_FOLDER}/config:/config
-      - ${DOCKER_FOLDER}/data:/data
-      - NEXTCLOUD_DATADIR=${DOCKER_FOLDER}/datadir
+      - ./config:/config
+      - /media/nexcloud:/data
     ports:
-      - 5443:443
+      - 7443:443
     restart: unless-stopped
     depends_on:
       - db
