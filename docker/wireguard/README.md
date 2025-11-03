@@ -18,7 +18,7 @@ forward-zone:
         forward-tls-upstream: yes
 ```
 
-#### Unbound static DNS entries
+#### Unbound static DNS entries (Optional) 
 The unbound/a-records.conf defines static DNS entries for your local network using local-data (A records) and local-data-ptr (PTR record).
 Location for `unbound/a-records.conf` 
 ```yaml
@@ -29,8 +29,10 @@ Location for `unbound/a-records.conf`
      local-data-ptr: "192.168.55.200 raspberry.lan."
 ```
 
-## Access Adguard 
+#### Access Adguard 
 While connected to WireGuard, navigate to http://10.2.0.100:3000 first to setup AdGuard Home before DNS query and adblocking to work.
 
-## Recommended configuration / Split tunnel:
+#### Recommended configuration / Split tunnel:
 Modify your wireguard client `AllowedIps` to `10.2.0.0/24` to only tunnel the web panel and DNS traffic.
+
+### Browse the Internet without adds connected to the VPS
