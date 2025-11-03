@@ -36,3 +36,4 @@ While connected to WireGuard, navigate to http://10.2.0.100:3000 first to setup 
 Modify your wireguard client `AllowedIps` to `10.2.0.0/24` to only tunnel the web panel and DNS traffic.
 
 ### Browse the Internet without adds connected to the VPS
+Android App Wireguard
