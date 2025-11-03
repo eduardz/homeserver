@@ -1,0 +1,38 @@
+# Required: HACS docker addon https://www.hacs.xyz/docs
+monitor_docker:
+  - name: server01
+    containers:
+      - homeassistant
+      - homepage
+      - nextcloud
+      - nextcloud_db
+      - nginx-manager
+      - qbittorrent
+      - traefik
+      - transmission
+      - vaultwarden
+      - portainer
+    rename:
+      vaultwarden: Vaultwarden
+    monitored_conditions:
+      - version
+      - containers_running
+      - containers_total
+      - state
+      - status
+      - memory
+
+# docker-proxy 
+  - name: brix202
+    url: tcp://192.168.1.253:2375
+    containers:
+     - unbound
+     - nginx
+
+# server02
+  - name: alpine
+    url: tcp://192.168.1.170:2375
+    containers:
+     - pialert
+     - ispyagentdvr
+     - coffee-app
