@@ -36,6 +36,21 @@ command_line:
       value_template: "{{ value.strip() }}"
       scan_interval: 8100
 
+# Monitor Storage pool
+  - sensor:
+      name: "raid_used"
+      command: "ssh -i /config/ssh/id_rsa-8192 -o StrictHostKeyChecking=no -q user@192.168.100.15 'sudo df -h /mnt/pool | grep /mnt/pool' | awk '{print $3}'"
+      value_template: "{{ value[:-1] | float }}"
+      unit_of_measurement: "TB"
+      scan_interval: 3600
+
+  - sensor:
+      name: "total_raid_storage"
+      command: "ssh -i /config/ssh/id_rsa-8192 -o StrictHostKeyChecking=no -q user@192.168.100.15 'sudo df -h /mnt/pool | grep /mnt/pool' | awk '{print $4}'"
+      value_template: "{{ value[:-1] | float }}"
+      unit_of_measurement: "TB"
+      scan_interval: 3600
+
 
 # Allow ha webui with reverseproxy
 http:
