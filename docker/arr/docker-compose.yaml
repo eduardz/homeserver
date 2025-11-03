@@ -64,10 +64,9 @@ services:
     networks:
       - media
 
-# tv
   sonarr:
     image: lscr.io/linuxserver/sonarr
-    container_name: sonarr
+    container_name: sonarr-tv
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -81,6 +80,47 @@ services:
       - media
     ports:
       - 8989:8989
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+    volumes:
+      - ./config:/config
+      - ${DOWNLOADS}:/downloads
+      - ${DOWNLOADS}/.incomplete:/incomplete-downloads
+    ports:
+      - 8090:8080
+    restart: unless-stopped
+    networks:
+      - media
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:5.0.4 # fixed version
+    container_name: qbittorrent
+    env_file:
+      - .env
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=51000
+      - WEBUI_USERNAME=${WEBUI_USERNAME}
+      - WEBUI_PASSWORD=${WEBUI_PASSWORD}
+    volumes:
+      - ./appdata:/config
+      - ${DOWNLOADS}:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 51000:51000/udp
+    restart: unless-stopped
+    networks:
+      - media
 
 networks:
   media:
