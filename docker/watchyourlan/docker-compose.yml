@@ -8,10 +8,12 @@ services:
     volumes:
     - ./data:/watchyourlan:/data
     environment:
-      TZ: Europe/Bucharest
-      IFACE: "ens18"   # 1 or more interfaces
-      DBPATH: "/data/db.sqlite" 
-      GUIIP: "0.0.0.0" 
-      GUIPORT: "8840"  # default: 8840
-      TIMEOUT: "120"   # time in seconds 
-      THEME: "slate" 
+      TZ: Europe/Bucharest              # required: needs your TZ for correct time
+      #IFACE: "ens18"                    # required: 1 or more interface
+      INTERFACE: "ens18"                # fix for empty hosts
+      DBPATH: "/data/db.sqlite"         # optional, default: /data/db.sqlite
+      GUIIP: "0.0.0.0"                  # optional, default: localhost
+      GUIPORT: "8840"                   # optional, default: 8840
+      TIMEOUT: "120"                    # optional, time in seconds, default: 60
+      #SHOUTRRR_URL: "telegram://"      # optional, set url to notify
+      THEME: "slate"                    # optional themes: ex: "cosmo"
