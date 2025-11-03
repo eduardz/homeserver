@@ -1,0 +1,87 @@
+services:
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=critical
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./jellyseerr:/app/config
+    restart: always
+    networks:
+      - media
+    ports:
+      - 5055:5055
+
+  overseerr:
+    image: linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=critical
+      - TZ=${TIMEZONE}
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - UMASK=002
+    volumes:
+      - ./overseerr/config:/app/config
+    ports:
+      - 5056:5055
+    restart: always
+    networks:
+      - media
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./bazarr/config:/config
+      - ${DATA_ROOT}/movies:/movies
+      - ${DATA_ROOT}/tv:/tv
+    restart: always
+    networks:
+      - media
+    ports:
+      - 6767:6767
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./radarr:/config
+      - ${DATA_ROOT}/movies:/data
+      - ${DOWNLOADS}:/downloads   # SABnzb/qbit
+    restart: always
+    ports:
+      - 7878:7878
+    networks:
+      - media
+
+# tv
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./sonarr/config:/config
+      - ${DATA_ROOT}/tv:/data
+      - ${DOWNLOADS}:/downloads   # SABnzb/qbit
+    restart: always
+    networks:
+      - media
+    ports:
+      - 8989:8989
+
+networks:
+  media:
+    external: true
