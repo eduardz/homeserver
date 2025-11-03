@@ -81,6 +81,22 @@ services:
     ports:
       - 8989:8989
 
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - BASE_URL=/prowlarr
+    volumes:
+      - ./data:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+      - media
+
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
