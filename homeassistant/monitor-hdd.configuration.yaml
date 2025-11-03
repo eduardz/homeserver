@@ -1,0 +1,44 @@
+# Configuration example for HDD monitoring on a Qnap DAS TR-004
+command_line:
+  - binary_sensor:
+      name: snapraid_ping
+      command: 'ping -W 1 -c 1 192.168.100.15 > /dev/null 2>&1 && echo success || echo fail'
+      device_class: connectivity
+      payload_on: "success"
+      payload_off: "fail"
+      scan_interval: 3600 #1 hour
+
+  # Monitor HDD Temperature 
+  - sensor:
+      name: "snapraid_sdb"
+      command: "ssh -i /config/ssh/id_rsa-8192 -o StrictHostKeyChecking=no -q user@192.168.100.15 'sudo smartctl -d jmb39x-q,0 -a /dev/disk/by-id/usb-QNAP_TR-004_DISK00_51323432423032343739-0:0' | grep Temperature_Celsius | awk '{print $10}' && sleep 2"
+      unit_of_measurement: "°C"
+      value_template: "{{ value }}"
+      scan_interval: 4200
+
+  - sensor:
+      name: "snapraid_sdc"
+      command: "ssh -i /config/ssh/id_rsa-8192 -o StrictHostKeyChecking=no -q user@192.168.100.15 'sudo smartctl -d jmb39x-q,1 -a /dev/disk/by-id/usb-QNAP_TR-004_DISK01_51323432423032343739-0:1' | grep Temperature_Celsius | awk '{print $10}' && sleep 1"
+      unit_of_measurement: "°C"
+      value_template: "{{ value }}"
+      scan_interval: 4200
+
+# Verify SMART values
+  - sensor:
+      name: "snapraid_sdb_smart"
+      command: "ssh -i /config/ssh/id_rsa-8192 -o StrictHostKeyChecking=no -q user@192.168.100.15 'sudo smartctl -d jmb39x-q,0 -a /dev/disk/by-id/usb-QNAP_TR-004_DISK00_51323432423032343739-0:0' | grep -i 'SMART overall-health' | awk '{print $NF}' && sleep 5"
+      value_template: "{{ value.strip() }}"
+      scan_interval: 8600
+
+  - sensor:
+      name: "snapraid_sdc_smart"
+      command: "ssh -i /config/ssh/id_rsa-8192 -o StrictHostKeyChecking=no -q user@192.168.100.15 'sudo smartctl -d jmb39x-q,1 -a /dev/disk/by-id/usb-QNAP_TR-004_DISK01_51323432423032343739-0:1' | grep -i 'SMART overall-health' | awk '{print $NF}' && sleep 7"
+      value_template: "{{ value.strip() }}"
+      scan_interval: 8100
+
+
+# Allow ha webui with reverseproxy
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.100.253
