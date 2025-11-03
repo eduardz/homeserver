@@ -7,7 +7,11 @@ All applications are run without requiring root access.
 
 #### Deploy container (docker) aplications 
 Applications, no root access
-
+To start or redeploy containers:
+```bash
+cd ~/docker/app
+docker compose up -d
+```
 
 All in one solution: 
 #### Updates + Security
