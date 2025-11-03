@@ -20,6 +20,6 @@ Crontab updates
 0 4 * * * docker compose -f /home/debian/docker/arr/docker-compose.yaml pull && docker compose -f /home/debian/docker/arr/docker-compose.yaml up -d  > /dev/null 2>&1
 ```
 
-#### Monitor & restart on demand
-With HomeAssistant 
+#### Monitor & restart on demand (proposed HomeAssistant)
+With HomeAssistant + Android app: HomeAssistant
 
