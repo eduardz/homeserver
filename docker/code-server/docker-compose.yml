@@ -9,7 +9,7 @@ services:
       - PASSWORD=MyPassword
       - SUDO_PASSWORD=MyOptionalStrongSudoPassword #optional
       - PROXY_DOMAIN=vscode.example.com #optional
-      - DEFAULT_WORKSPACE=/home/workspace #optional
+      - DEFAULT_WORKSPACE=~/workspace #optional
     volumes:
       - ~/workspace:/workspace
       - ./config:/config # configuration folder 
