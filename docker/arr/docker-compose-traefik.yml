@@ -1,0 +1,61 @@
+services:
+  overseerr:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.overseerr.entryPoints=websecure"
+      - "traefik.http.routers.overseerr.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.overseerr.rule=Host(`overseer.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.docker.network=traefik-public"
+      - "traefik.port=5055"
+
+  bazarr:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.entryPoints=websecure"
+      - "traefik.http.routers.bazarr.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.port=6767"
+
+  radarr:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.entryPoints=websecure"
+      - "traefik.http.routers.radarr.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+
+  sonarr:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.entryPoints=websecure"
+      - "traefik.http.routers.sonarr.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.port=8989"
+
+  prowlarr:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.entryPoints=websecure"
+      - "traefik.http.routers.prowlarr.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+
+  sabnzbd:
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.sabnzbd.entryPoints=websecure"
+      - "traefik.http.routers.sabnzbd.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.sabnzbd.loadbalancer.server.port=7878"
+
+  qbittorrent:
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.qbittorrent.entryPoints=websecure"
+      - "traefik.http.routers.qbittorrent.tls.certResolver=letsEncrypt"
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8055"
