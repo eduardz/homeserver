@@ -4,9 +4,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.overseerr.entryPoints=websecure"
       - "traefik.http.routers.overseerr.tls.certResolver=letsEncrypt"
-      - "traefik.http.routers.overseerr.rule=Host(`overseer.${DOMAIN}`)" # Edit here to change the domain name
-      - "traefik.docker.network=traefik-public"
-      - "traefik.port=5055"
+      - "traefik.http.routers.overseerr.rule=Host(`overseerr.${DOMAIN}`)" # Edit here to change the domain name
+      - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
 
   bazarr:
     labels:
@@ -15,8 +14,6 @@ services:
       - "traefik.http.routers.bazarr.tls.certResolver=letsEncrypt"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN}`)" # Edit here to change the domain name
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
-      - "traefik.docker.network=traefik-public"
-      - "traefik.port=6767"
 
   radarr:
     labels:
@@ -33,8 +30,6 @@ services:
       - "traefik.http.routers.sonarr.tls.certResolver=letsEncrypt"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN}`)" # Edit here to change the domain name
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-      - "traefik.docker.network=traefik-public"
-      - "traefik.port=8989"
 
   prowlarr:
     labels:
