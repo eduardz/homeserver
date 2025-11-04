@@ -1,17 +1,22 @@
 services:
-  jellyseerr:
-    image: ghcr.io/fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    environment:
-      - LOG_LEVEL=critical
-      - TZ=${TIMEZONE}
-    volumes:
-      - ./jellyseerr:/app/config
-    restart: always
+  traefik:
+    #image: traefik:v2.10
+    image: traefik:v3.5.4
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     networks:
       - media
     ports:
-      - 5055:5055
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic:/dynamic:ro
+      # Add certificates folder
+      - /home/alpine/docker/test/traefik/certs:/certs
 
   overseerr:
     image: linuxserver/overseerr:latest
@@ -123,7 +128,7 @@ services:
       - TZ=${TIMEZONE}
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8055
       - TORRENTING_PORT=51000
       - WEBUI_USERNAME=${WEBUI_USERNAME}
       - WEBUI_PASSWORD=${WEBUI_PASSWORD}
@@ -131,7 +136,7 @@ services:
       - ./appdata:/config
       - ${DOWNLOADS}:/downloads
     ports:
-      - 8080:8080
+      - 8055:8055
       - 6881:6881
       - 51000:51000/udp
     restart: unless-stopped
@@ -140,4 +145,5 @@ services:
 
 networks:
   media:
-    external: true
+    driver: bridge
+    #external: true
