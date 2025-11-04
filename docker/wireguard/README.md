@@ -5,7 +5,7 @@
 
 
 #### Modifying the upstream DNS provider for Unbound
-If you choose to not use Cloudflare any reason you are able to modify the upstream DNS provider in `unbound.conf`.
+If you choose to not use Cloudflare,then modify the upstream DNS provider in `unbound.conf`.
 
 Search for `forward-zone` and modify the IP addresses for your chosen DNS [provider](https://docs.pi-hole.net/guides/dns/upstream-dns-providers/).
 ```yaml
@@ -36,4 +36,4 @@ While connected to WireGuard, navigate to http://10.2.0.100:3000 first to setup 
 Modify your wireguard client `AllowedIps` to `10.2.0.0/24` to only tunnel the web panel and DNS traffic.
 
 ### Browse the Internet without adds connected to the VPS
-Android App Wireguard
+Android App: Wireguard for smartphone protection
