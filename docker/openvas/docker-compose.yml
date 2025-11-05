@@ -1,0 +1,12 @@
+services:
+  openvas:
+    image: immauss/openvas:latest
+    container_name: openvas
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Bucharest
+    ports:
+      - "9392:9392"
+    volumes:
+      - ./data:/data
+      - ./feed:/var/lib/openvas
