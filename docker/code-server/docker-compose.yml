@@ -3,16 +3,14 @@ services:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1000 
+      - PGID=1000 
       - TZ=Europe/Bucharest
       - PASSWORD=MyPassword
-      - SUDO_PASSWORD=MyOptionalStrongSudoPassword #optional
-      - PROXY_DOMAIN=vscode.example.com #optional
-      - DEFAULT_WORKSPACE=~/workspace #optional
+      - DEFAULT_WORKSPACE=/vscode
     volumes:
-      - ~/workspace:/workspace
-      - ./config:/config # configuration folder 
+      - ~/vscode:/vscode # allow file/folder access to vscode -> `chmod o+rwx /~/vscode`
+      - ./config:/config # config folder for packages
     ports:
       - 8443:8443
     restart: unless-stopped
