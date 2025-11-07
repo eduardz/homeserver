@@ -1,17 +1,20 @@
-#### Docker Applications Deployment
+#### Container Applications Deployment
 
-This repository contains configuration files and instructions for deploying containerized applications using **Docker Compose**.  
-All applications are run without requiring root access.
+This repository contains configuration files and instructions for deploying containerized applications using **Docker Compose** but also **Nerdctl**
+All applications run without requiring root access / sudo  but still rootful . 
 
 
 
-#### Deploy container (docker) aplications 
-Applications, no root access
+#### Deploy process either compose or cli 
 To start or redeploy containers:
-```bash
-cd ~/docker/app
-docker compose up -d
-```
+
+| Docker | Nerdctl |
+|---------|----------|
+| [Docker Cheatsheet](https://docs.docker.com/get-started/docker_cheatsheet.pdf)  | [ NerdCTL CheatSheet](https://github.com/containerd/nerdctl/blob/main/docs/command-reference.md) | 
+| `docker compose up -d ` | `nerdctl compose up -d` |
+| ` docker run` | `nerdctl run`
+
+
 
 All in one solution: 
 #### Updates + Security
