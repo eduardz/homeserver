@@ -24,5 +24,5 @@ Crontab updates
 ```
 
 #### Monitor & restart on demand (proposed HomeAssistant)
-With HomeAssistant + Android app: HomeAssistant
+With HomeAssistant + Android/IOS App: HomeAssistant under VPN 
 
